@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "sssftp_account_test_bucket" {
-    bucket = "sssftp_account_test_bucket"
+    bucket = "${var.sssftp_bucket}"
     acl = "private"
 
     tags {
@@ -29,6 +29,28 @@ resource "aws_iam_role" "sssftp_role" {
       },
       "Effect": "Allow",
       "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "sssftp_s3_policy" {
+    name = "sssftp_s3_policy"
+    role = "${aws_iam_role.sssftp_role.id}"
+    policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:*"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::${var.sssftp_bucket}",
+        "arn:aws:s3:::${var.sssftp_bucket}/*"
+      ]
     }
   ]
 }

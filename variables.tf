@@ -3,4 +3,5 @@ variable "aws_region" {
 }
 
 variable "sssftp_account_number" {}
+variable "sssftp_bucket" {}
 variable "sssftp_external_id" {}
